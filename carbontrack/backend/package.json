@@ -1,0 +1,46 @@
+{
+  "name": "carbontrack-backend",
+  "version": "0.1.0",
+  "description": "CarbonTrack API - Carbon accounting for SMBs",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:seed": "node src/db/seed.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint src/**/*.js"
+  },
+  "keywords": [
+    "carbon",
+    "emissions",
+    "sustainability",
+    "ESG",
+    "climate"
+  ],
+  "author": "CarbonTrack Team",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.7.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "prisma": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

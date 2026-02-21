@@ -1,0 +1,271 @@
+// Prisma schema for CarbonTrack
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User & Organization Management
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  role          UserRole       @default(USER)
+  organizationId String
+  organization  Organization   @relation(fields: [organizationId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  activities    Activity[]
+  
+  @@index([organizationId])
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  VIEWER
+}
+
+model Organization {
+  id              String          @id @default(uuid())
+  name            String
+  industry        String?
+  size            CompanySize?
+  country         String
+  currency        String          @default("USD")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  users           User[]
+  facilities      Facility[]
+  emissions       Emission[]
+  targets         Target[]
+  
+  @@index([industry])
+}
+
+enum CompanySize {
+  MICRO      // 1-9 employees
+  SMALL      // 10-49
+  MEDIUM     // 50-249
+  LARGE      // 250+
+}
+
+// Facilities (locations, offices, warehouses)
+model Facility {
+  id              String          @id @default(uuid())
+  organizationId  String
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  name            String
+  type            FacilityType
+  address         String?
+  country         String
+  size            Float?          // square meters/feet
+  createdAt       DateTime        @default(now())
+  
+  activities      Activity[]
+  
+  @@index([organizationId])
+}
+
+enum FacilityType {
+  OFFICE
+  WAREHOUSE
+  RETAIL
+  FACTORY
+  DATA_CENTER
+  OTHER
+}
+
+// Emission Activities (the data inputs)
+model Activity {
+  id              String          @id @default(uuid())
+  organizationId  String
+  facilityId      String?
+  facility        Facility?       @relation(fields: [facilityId], references: [id])
+  userId          String
+  user            User            @relation(fields: [userId], references: [id])
+  
+  category        ActivityCategory
+  subcategory     String?
+  date            DateTime        // Month/year of activity
+  
+  // Input data (flexible based on category)
+  value           Float           // Primary metric (kWh, liters, kg, etc.)
+  unit            String          // Unit of measurement
+  
+  // Optional details
+  supplier        String?
+  description     String?
+  cost            Float?
+  currency        String?
+  
+  // Attachments
+  receiptUrl      String?
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  emissions       Emission[]
+  
+  @@index([organizationId, date])
+  @@index([facilityId])
+  @@index([category])
+}
+
+enum ActivityCategory {
+  // Scope 1 - Direct emissions
+  STATIONARY_COMBUSTION    // Heating, generators
+  MOBILE_COMBUSTION        // Company vehicles
+  FUGITIVE_EMISSIONS       // Refrigerants, leaks
+  PROCESS_EMISSIONS        // Industrial processes
+  
+  // Scope 2 - Indirect from energy
+  PURCHASED_ELECTRICITY
+  PURCHASED_HEATING
+  PURCHASED_COOLING
+  PURCHASED_STEAM
+  
+  // Scope 3 - Other indirect
+  PURCHASED_GOODS          // Materials, supplies
+  CAPITAL_GOODS            // Equipment, buildings
+  FUEL_ENERGY_RELATED      // Upstream emissions
+  UPSTREAM_TRANSPORT       // Shipping to company
+  WASTE                    // Waste disposal
+  BUSINESS_TRAVEL          // Flights, hotels
+  EMPLOYEE_COMMUTE
+  DOWNSTREAM_TRANSPORT     // Shipping to customers
+  USE_OF_SOLD_PRODUCTS
+  END_OF_LIFE
+  CLOUD_SERVICES           // AWS, Azure, etc.
+  OTHER
+}
+
+// Calculated Emissions
+model Emission {
+  id              String          @id @default(uuid())
+  organizationId  String
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  activityId      String
+  activity        Activity        @relation(fields: [activityId], references: [id])
+  
+  scope           EmissionScope
+  category        ActivityCategory
+  
+  // Calculation details
+  co2e            Float           // CO2 equivalent in kg
+  co2             Float?          // Individual gases (optional)
+  ch4             Float?
+  n2o             Float?
+  
+  emissionFactor  Float           // Factor used (for audit trail)
+  factorSource    String          // EPA, IPCC, etc.
+  factorYear      Int             // Year of emission factor
+  
+  date            DateTime        // Period this emission represents
+  calculatedAt    DateTime        @default(now())
+  
+  @@index([organizationId, date])
+  @@index([scope])
+  @@index([activityId])
+}
+
+enum EmissionScope {
+  SCOPE_1
+  SCOPE_2
+  SCOPE_3
+}
+
+// Emission Factors (reference data)
+model EmissionFactor {
+  id              String          @id @default(uuid())
+  
+  category        ActivityCategory
+  subcategory     String?
+  region          String          // US, EU, UK, GLOBAL
+  
+  // Factor details
+  factor          Float           // kg CO2e per unit
+  unit            String          // kWh, liter, kg, etc.
+  source          String          // EPA, DEFRA, IPCC
+  year            Int
+  methodology     String?
+  
+  // Gas breakdown (optional)
+  co2Factor       Float?
+  ch4Factor       Float?
+  n2oFactor       Float?
+  
+  validFrom       DateTime
+  validTo         DateTime?
+  
+  createdAt       DateTime        @default(now())
+  
+  @@index([category, region])
+  @@index([region, year])
+}
+
+// Reduction Targets
+model Target {
+  id              String          @id @default(uuid())
+  organizationId  String
+  organization    Organization    @relation(fields: [organizationId], references: [id])
+  
+  name            String
+  description     String?
+  targetYear      Int
+  baselineYear    Int
+  baselineValue   Float           // kg CO2e
+  targetValue     Float           // kg CO2e
+  scope           EmissionScope?  // null = all scopes
+  
+  status          TargetStatus    @default(ACTIVE)
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  @@index([organizationId])
+}
+
+enum TargetStatus {
+  ACTIVE
+  ACHIEVED
+  MISSED
+  ARCHIVED
+}
+
+// Recommendations (AI-generated or rule-based)
+model Recommendation {
+  id              String          @id @default(uuid())
+  organizationId  String
+  
+  title           String
+  description     String
+  category        ActivityCategory
+  
+  // Impact estimates
+  potentialSavingKg Float         // kg CO2e/year
+  potentialCostSaving Float?      // currency/year
+  implementationCost  Float?
+  paybackMonths   Int?
+  
+  priority        Int             @default(0)
+  status          RecommendationStatus @default(PENDING)
+  
+  createdAt       DateTime        @default(now())
+  
+  @@index([organizationId, priority])
+}
+
+enum RecommendationStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  DISMISSED
+}

@@ -1,0 +1,346 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2024-01",
+    "sources": [
+      "EPA Emission Factors Hub (2023)",
+      "UK DEFRA/BEIS (2023)",
+      "IPCC Guidelines",
+      "IEA Country Electricity Factors"
+    ],
+    "notes": "Factors in kg CO2e per unit. Regional variations included where available."
+  },
+  "electricity": {
+    "US": {
+      "factor": 0.386,
+      "unit": "kWh",
+      "source": "EPA eGRID 2023",
+      "year": 2023,
+      "notes": "US national average grid mix"
+    },
+    "US_CALIFORNIA": {
+      "factor": 0.201,
+      "unit": "kWh",
+      "source": "EPA eGRID 2023",
+      "year": 2023
+    },
+    "US_TEXAS": {
+      "factor": 0.414,
+      "unit": "kWh",
+      "source": "EPA eGRID 2023",
+      "year": 2023
+    },
+    "UK": {
+      "factor": 0.193,
+      "unit": "kWh",
+      "source": "DEFRA 2023",
+      "year": 2023
+    },
+    "EU": {
+      "factor": 0.255,
+      "unit": "kWh",
+      "source": "IEA 2023",
+      "year": 2023,
+      "notes": "EU-27 average"
+    },
+    "GLOBAL": {
+      "factor": 0.475,
+      "unit": "kWh",
+      "source": "IEA 2023",
+      "year": 2023
+    }
+  },
+  "naturalGas": {
+    "GLOBAL": {
+      "factor": 0.18356,
+      "unit": "kWh",
+      "source": "IPCC",
+      "year": 2023,
+      "notes": "Stationary combustion"
+    },
+    "US": {
+      "factor": 5.3,
+      "unit": "therm",
+      "source": "EPA",
+      "year": 2023
+    },
+    "cubic_meter": {
+      "factor": 2.0,
+      "unit": "m3",
+      "source": "IPCC",
+      "year": 2023
+    }
+  },
+  "heatingOil": {
+    "GLOBAL": {
+      "factor": 2.96,
+      "unit": "liter",
+      "source": "IPCC",
+      "year": 2023
+    }
+  },
+  "transportation": {
+    "gasoline": {
+      "factor": 2.31,
+      "unit": "liter",
+      "source": "EPA",
+      "year": 2023,
+      "notes": "Includes combustion + upstream"
+    },
+    "diesel": {
+      "factor": 2.68,
+      "unit": "liter",
+      "source": "EPA",
+      "year": 2023,
+      "notes": "Includes combustion + upstream"
+    },
+    "jetFuel": {
+      "factor": 2.52,
+      "unit": "liter",
+      "source": "IPCC",
+      "year": 2023
+    },
+    "vehicle_distance": {
+      "car_average": {
+        "factor": 0.17,
+        "unit": "km",
+        "source": "DEFRA",
+        "year": 2023,
+        "notes": "Average passenger car"
+      },
+      "car_small": {
+        "factor": 0.14,
+        "unit": "km",
+        "source": "DEFRA",
+        "year": 2023
+      },
+      "car_medium": {
+        "factor": 0.17,
+        "unit": "km",
+        "source": "DEFRA",
+        "year": 2023
+      },
+      "car_large": {
+        "factor": 0.21,
+        "unit": "km",
+        "source": "DEFRA",
+        "year": 2023
+      },
+      "van": {
+        "factor": 0.23,
+        "unit": "km",
+        "source": "DEFRA",
+        "year": 2023
+      },
+      "truck": {
+        "factor": 0.89,
+        "unit": "km",
+        "source": "DEFRA",
+        "year": 2023,
+        "notes": "Heavy goods vehicle"
+      }
+    }
+  },
+  "flights": {
+    "short_haul": {
+      "factor": 0.156,
+      "unit": "km",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "< 500 km, economy class, per passenger"
+    },
+    "medium_haul": {
+      "factor": 0.112,
+      "unit": "km",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "500-1500 km, economy"
+    },
+    "long_haul": {
+      "factor": 0.102,
+      "unit": "km",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "> 1500 km, economy"
+    },
+    "long_haul_business": {
+      "factor": 0.306,
+      "unit": "km",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "> 1500 km, business class"
+    }
+  },
+  "shipping": {
+    "freight_truck": {
+      "factor": 0.062,
+      "unit": "tonne-km",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Road freight per tonne-kilometer"
+    },
+    "freight_rail": {
+      "factor": 0.022,
+      "unit": "tonne-km",
+      "source": "DEFRA",
+      "year": 2023
+    },
+    "freight_ship": {
+      "factor": 0.0114,
+      "unit": "tonne-km",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Container ship"
+    },
+    "freight_air": {
+      "factor": 0.602,
+      "unit": "tonne-km",
+      "source": "DEFRA",
+      "year": 2023
+    }
+  },
+  "waste": {
+    "landfill": {
+      "factor": 0.468,
+      "unit": "kg",
+      "source": "EPA WARM",
+      "year": 2023,
+      "notes": "Mixed municipal solid waste"
+    },
+    "incineration": {
+      "factor": 0.021,
+      "unit": "kg",
+      "source": "EPA WARM",
+      "year": 2023
+    },
+    "recycling_paper": {
+      "factor": -3.54,
+      "unit": "kg",
+      "source": "EPA WARM",
+      "year": 2023,
+      "notes": "Negative = avoided emissions"
+    },
+    "recycling_plastic": {
+      "factor": -1.47,
+      "unit": "kg",
+      "source": "EPA WARM",
+      "year": 2023
+    },
+    "recycling_metal": {
+      "factor": -1.76,
+      "unit": "kg",
+      "source": "EPA WARM",
+      "year": 2023
+    }
+  },
+  "materials": {
+    "paper": {
+      "factor": 0.91,
+      "unit": "kg",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Virgin paper production"
+    },
+    "plastic": {
+      "factor": 3.29,
+      "unit": "kg",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Average plastic"
+    },
+    "steel": {
+      "factor": 1.37,
+      "unit": "kg",
+      "source": "DEFRA",
+      "year": 2023
+    },
+    "aluminum": {
+      "factor": 8.16,
+      "unit": "kg",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Primary aluminum"
+    },
+    "concrete": {
+      "factor": 0.11,
+      "unit": "kg",
+      "source": "IPCC",
+      "year": 2023
+    }
+  },
+  "cloud": {
+    "aws_us_east": {
+      "factor": 0.385,
+      "unit": "kWh",
+      "source": "AWS Customer Carbon Footprint Tool",
+      "year": 2023,
+      "notes": "Estimated from regional grid + PUE"
+    },
+    "gcp_us_central": {
+      "factor": 0.318,
+      "unit": "kWh",
+      "source": "Google Cloud Carbon Footprint",
+      "year": 2023
+    },
+    "azure_us_east": {
+      "factor": 0.315,
+      "unit": "kWh",
+      "source": "Microsoft Emissions Impact Dashboard",
+      "year": 2023
+    },
+    "generic_datacenter": {
+      "factor": 0.4,
+      "unit": "kWh",
+      "source": "Estimated",
+      "year": 2023,
+      "notes": "Conservative estimate for generic cloud"
+    }
+  },
+  "water": {
+    "supply_treatment": {
+      "factor": 0.344,
+      "unit": "m3",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Water supply and treatment"
+    },
+    "wastewater": {
+      "factor": 0.708,
+      "unit": "m3",
+      "source": "DEFRA",
+      "year": 2023
+    }
+  },
+  "refrigerants": {
+    "R134a": {
+      "factor": 1430,
+      "unit": "kg",
+      "source": "IPCC AR6",
+      "year": 2023,
+      "notes": "GWP100, common in automotive AC"
+    },
+    "R410A": {
+      "factor": 2088,
+      "unit": "kg",
+      "source": "IPCC AR6",
+      "year": 2023,
+      "notes": "Common in HVAC"
+    },
+    "HFC_average": {
+      "factor": 1800,
+      "unit": "kg",
+      "source": "IPCC AR6",
+      "year": 2023,
+      "notes": "Average HFC refrigerant"
+    }
+  },
+  "hotels": {
+    "hotel_night": {
+      "factor": 10.9,
+      "unit": "room-night",
+      "source": "DEFRA",
+      "year": 2023,
+      "notes": "Average hotel stay per room per night"
+    }
+  }
+}
